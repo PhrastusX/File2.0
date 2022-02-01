@@ -27,10 +27,9 @@ bool checkIfFile(std::string filePath)
 
 int main (int argc, char* argv[]) {
 
-    std::vector<std::string> files;
-    std::vector<std::string> file_name;
-    std::vector<unsigned char> bin_file_rep;
-    std::vector<Node*> leaves;
+    std::vector<std::string> file_name; //keeping track of file names
+    std::vector<unsigned char> bin_file_rep; //file is stored in this vector
+    std::vector<Node*> leaves; //leaves for the merkle tree
     std::string  temp, h;
     Keccak keccak;
     unsigned char c;
@@ -78,8 +77,7 @@ int main (int argc, char* argv[]) {
 
             in_file.close();
 
-            
-            
+    
         }
       
         
