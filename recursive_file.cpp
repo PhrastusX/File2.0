@@ -70,7 +70,9 @@ int main (int argc, char* argv[]) {
 
             temp = keccak(ss);
 
-            files.push_back(temp);
+            leaves.push_back(new Node(temp));
+            leaves.back()->left = NULL;
+            leaves.back()->right = NULL;
 
             file_name.push_back(h);
 
@@ -85,12 +87,7 @@ int main (int argc, char* argv[]) {
 
     
 
-    for (int i = 0; i < files.size(); i++){
-        //std::cout << files[i] << std::endl;
-        leaves.push_back(new Node(files[i]));
-        leaves[i]->left = NULL;
-        leaves[i]->right = NULL;
-    }
+ 
 
     merkle_tree *hash_tree = new merkle_tree(leaves);
 
