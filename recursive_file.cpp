@@ -97,9 +97,8 @@ int main (int argc, char* argv[]) {
       
         
     }//for
-    std::vector<Node*>::iterator i;
-    for(int i = 0; i < leaves.size(); i++)
-            std::cout << leaves[i]->hash << std::endl;
+    merkle_tree tree = merkle_tree();
+    tree.build_tree(leaves);
 
     return 0;
 }

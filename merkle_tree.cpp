@@ -3,7 +3,8 @@
 #include <string>
 #include <iostream>
 
-
+#define BASE 2
+#define KEY 123456789
 
 struct Node {
     int count;
@@ -22,6 +23,34 @@ struct Node {
 struct merkle_tree {
 
     Node* root;
+    Keccak keccak;
+
+    void build_tree(std::vector<Node*> children)
+    {
+        std::vector<Node*> parents;
+        std::string temp; //holds all the concatinated hashes
+        int displacement = children.size() % BASE;
+
+        for(int i = 0; i < children.size(); i+=BASE)
+        {
+            for(int j = i; j < BASE+i; j++)
+            {
+                temp = temp + children[j]->hash;
+            }
+
+            std::string hash = keccak(temp);
+            parents.push_back(new Node(hash));
+
+            for(int k = i; k < BASE + i; k++)
+            {
+                parents.back()->data_ptr.push_back(children[k]);
+            }
+            
+        }
+
+
+
+    }
     
 
     void print_tree(Node *n)
