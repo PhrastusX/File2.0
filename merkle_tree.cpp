@@ -4,9 +4,11 @@
 #include <iostream>
 
 struct Node {
+    int count;
     std::string hash;
     Node *left;
     Node *right;
+    std::string file_directory;
 
     Node(std::string data){
         hash = data;
@@ -61,7 +63,14 @@ struct merkle_tree {
                 std::cout << std::endl;
             }
 
-            std::cout << n->hash << "\n";
+            if(n->left || n->right){
+                std::cout <<"Node hash: " <<  n->hash << "\n"  << "Left hash: " << n->left->hash  << "\n" << "Right Hash: " << n->right->hash<< "\n" << std::endl;
+            }
+            else{
+            
+                std::cout << "Node number: " << n->count <<"\n"+ n->hash << "\n" << n->file_directory << "\n\n";
+            }
+        
         }
     }
     

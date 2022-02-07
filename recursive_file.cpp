@@ -33,6 +33,7 @@ int main (int argc, char* argv[]) {
     std::string  temp, h;
     Keccak keccak;
     unsigned char c;
+    int count = 0;
   
   
 
@@ -47,6 +48,7 @@ int main (int argc, char* argv[]) {
         h = dir->path().string();
 
         if(checkIfFile(h)){
+            count++;
             
             
 
@@ -72,6 +74,9 @@ int main (int argc, char* argv[]) {
             leaves.push_back(new Node(temp));
             leaves.back()->left = NULL;
             leaves.back()->right = NULL;
+            leaves.back()->file_directory = h;
+            leaves.back()->count = count;
+
 
             file_name.push_back(h);
 
