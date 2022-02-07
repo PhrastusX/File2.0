@@ -89,25 +89,17 @@ int main (int argc, char* argv[]) {
 
     
         }
+
+        
+
+        
+        
       
         
     }//for
-
-    merkle_tree *hash_tree = new merkle_tree(leaves);
-
-
-    
-    hash_tree->print_tree(hash_tree->root);
-
-    auto stop = chrono::high_resolution_clock::now();
-
-    auto duration = chrono::duration_cast<chrono::seconds>(stop - start);
-  
-    std::cout << "Seconds: " << duration.count() << std::endl;
-
+    std::vector<Node*>::iterator i;
+    for(int i = 0; i < leaves.size(); i++)
+            std::cout << leaves[i]->hash << std::endl;
 
     return 0;
-
-  
-  
 }
