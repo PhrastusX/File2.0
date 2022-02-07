@@ -78,8 +78,6 @@ int main (int argc, char* argv[]) {
             temp = keccak(ss);
 
             leaves.push_back(new Node(temp));
-            leaves.back()->left = NULL;
-            leaves.back()->right = NULL;
             leaves.back()->file_directory = directory_path;
             leaves.back()->count = count;
 
@@ -99,6 +97,7 @@ int main (int argc, char* argv[]) {
     }//for
     merkle_tree tree = merkle_tree();
     tree.build_tree(leaves);
+    tree.print_tree(tree.root);
 
     return 0;
 }

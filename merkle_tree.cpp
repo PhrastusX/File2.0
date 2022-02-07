@@ -3,6 +3,7 @@
 #include <string>
 #include <iostream>
 
+
 #define BASE 2
 #define KEY 123456789
 
@@ -10,8 +11,6 @@ struct Node {
     int count;
     std::string hash;
     std::string file_directory;
-    Node *left;
-    Node *right;
     std::vector<Node*> data_ptr;
 
     Node(std::string data){
@@ -28,9 +27,11 @@ struct merkle_tree {
     void build_tree(std::vector<Node*> children)
     {
         std::vector<Node*> parents;
-        std::string temp; //holds all the concatinated hashes
+        std::string temp = std::to_string(KEY); //holds all the concatinated hashes
         int displacement = children.size() % BASE;
 
+        while(children.size() != 1){
+            parents.clear();
         for(int i = 0; i < children.size(); i+=BASE)
         {
             for(int j = i; j < BASE+i; j++)
@@ -41,12 +42,22 @@ struct merkle_tree {
             std::string hash = keccak(temp);
             parents.push_back(new Node(hash));
 
+            temp = std::to_string(KEY);
+
             for(int k = i; k < BASE + i; k++)
             {
                 parents.back()->data_ptr.push_back(children[k]);
             }
+
+       
             
         }
+        children = parents;
+        }
+        
+        
+        
+        this->root = parents[0];
 
 
 
@@ -56,24 +67,14 @@ struct merkle_tree {
     void print_tree(Node *n)
         {
         
-        if (n) {
-            if (n->left) {
-                print_tree(n->left);
-            }
-            if (n->right) {
-                print_tree(n->right);               
-            }
-            if(n->left || n->right){
-                std::cout <<"Node hash: " <<  n->hash << "\n"  << "Left hash: " << n->left->hash  << "\n" << "Right Hash: " << n->right->hash<< "\n" << std::endl;
-            }
-            else{
-            
-                std::cout << "Node number: " << n->count <<"\n"+ n->hash << "\n" << n->file_directory << "\n\n";
-            }
+        if (n)
+        {
+            std::cout << n->data_ptr[0]->hash << std::endl;
+        }
         
             
             
-        }
+        
     }
     
 };
