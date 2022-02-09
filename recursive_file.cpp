@@ -45,7 +45,7 @@ int main (int argc, char* argv[]) {
   
 
     
-    for ( filesys::recursive_directory_iterator end, dir("/home/theo/file_test"); 
+    for ( filesys::recursive_directory_iterator end, dir("/home/theo/Desktop"); 
     dir != end; dir++ ) {
 
         

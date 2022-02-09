@@ -4,7 +4,7 @@
 #include <iostream>
 
 
-#define BASE 2
+#define BASE 12
 #define KEY 123456789
 
 struct Node {
@@ -26,33 +26,66 @@ struct merkle_tree {
 
     void build_tree(std::vector<Node*> children)
     {
+
         std::vector<Node*> parents;
         std::string temp = std::to_string(KEY); //holds all the concatinated hashes
-        int displacement = children.size() % BASE;
+        std::string hash = keccak(temp);
+        int displacement = 0;
+        int toggle       = 1; //toggle add key 
 
         while(children.size() != 1){
+
+            displacement = children.size() % BASE;
+
             parents.clear();
-        for(int i = 0; i < children.size(); i+=BASE)
-        {
-            for(int j = i; j < BASE+i; j++)
+
+            for(int i = 0; i < children.size() - displacement; i+=BASE)
             {
-                temp = temp + children[j]->hash;
+                for(int j = i; j < BASE + i; j++)
+                {
+                    temp = temp + children[j]->hash;
+                }
+
+                hash = keccak(temp);
+                parents.push_back(new Node(hash));
+                
+                //add the key or not
+                if(toggle == 1)
+                    {temp = std::to_string(KEY);}
+
+                else 
+                    {temp.clear();}
+
+                for(int k = i; k < BASE + i; k++)
+                {
+                    parents.back()->data_ptr.push_back(children[k]);
+                }
+
             }
 
-            std::string hash = keccak(temp);
+            
+            if(displacement != 0)
+            {
+                for(int n = children.size() - displacement; n != children.size(); n++){
+                
+                temp = temp + children[n]->hash;
+                }
+
+            
+            hash = keccak(temp);
             parents.push_back(new Node(hash));
 
-            temp = std::to_string(KEY);
-
-            for(int k = i; k < BASE + i; k++)
-            {
-                parents.back()->data_ptr.push_back(children[k]);
+            for(int n = 0; n < displacement; n++){
+                
+                parents.back()->data_ptr.push_back(children[n]);
+                }
             }
 
-       
             
-        }
-        children = parents;
+            displacement = 0;
+            toggle = 0;
+            temp.clear();
+            children = parents;
         }
         
         
@@ -69,7 +102,7 @@ struct merkle_tree {
         
         if (n)
         {
-            std::cout << n->data_ptr[0]->hash << std::endl;
+            std::cout << n->hash << std::endl;
         }
         
             
