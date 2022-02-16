@@ -4,8 +4,15 @@
 #include <iostream>
 
 
-#define BASE 12
+#define BASE 2
 #define KEY 123456789
+
+struct file_info
+{
+    std::string directory;
+    double size;
+
+};
 
 struct Node {
     int count;
@@ -63,7 +70,6 @@ struct merkle_tree {
 
             }
 
-            
             if(displacement != 0)
             {
                 for(int n = children.size() - displacement; n != children.size(); n++){
