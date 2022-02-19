@@ -4,7 +4,7 @@
 #include <iostream>
 
 
-#define BASE 2
+
 #define KEY 123456789
 
 struct file_info
@@ -31,7 +31,7 @@ struct merkle_tree {
     Node* root;
     Keccak keccak;
 
-    void build_tree(std::vector<Node*> children)
+    void build_tree(std::vector<Node*> children, int BASE)
     {
 
         std::vector<Node*> parents;
@@ -117,30 +117,3 @@ struct merkle_tree {
     }
     
 };
-/*
-int main() {
-
-    std::vector<Node*> leaves;
-    Keccak keccak;
-
-    leaves.push_back(new Node(keccak("somedata")));
-    leaves.push_back(new Node(keccak("somedata")));
-    leaves.push_back(new Node(keccak("somedata")));
-    leaves.push_back(new Node(keccak("somedata")));
-    leaves.push_back(new Node(keccak("somedata")));
-
-    // initialize leaves
-    for (unsigned int i = 0; i < leaves.size(); i++) {
-        leaves[i]->left = NULL;
-        leaves[i]->right = NULL;
-    }
-
-    merkle_tree *hashTree = new merkle_tree(leaves);
-
-
-    
-    hashTree->print_tree(hashTree->root);
-    
-
-    return 0;
-}*/

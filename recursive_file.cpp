@@ -113,26 +113,17 @@ void q_sort(std::vector<file_info *> &sorting_file, int start, int end)
     q_sort(sorting_file, p + 1, end);
 }
 
-int main (int argc, char* argv[]) {
-
-    auto start = chrono::high_resolution_clock::now();
-
+std::vector<Node *> hash_file(std::vector<file_info *> files)
+{
     std::vector<std::string> file_name; //keeping track of file names
     std::vector<unsigned char> bin_file_rep; //file is stored in this vector
-    std::vector<Node*> leaves; //leaves for the merkle tree
+    std::vector<Node * > leaves; //leaves for the merkle tree
     std::string  temp, directory_path;
     Keccak keccak;
     unsigned char c;
     int count = 0;
-  
-  
-    auto start_sort = chrono::high_resolution_clock::now();
-    std::vector<file_info *> files = fill_files("/home/theo/bitcoin");
-    q_sort(files, 0, files.size()-1);
-    auto end_sort = chrono::high_resolution_clock::now();
+    
 
-
-    auto start_read_file = chrono::high_resolution_clock::now();
     for ( int i = 0; i < files.size(); i++ ) {
 
         
@@ -158,7 +149,8 @@ int main (int argc, char* argv[]) {
                 
 
             }//while
-      
+
+            //puts the character arry of file into ss to be hashed
             std::string ss(bin_file_rep.begin(), bin_file_rep.end() - 1);
 
            
@@ -175,22 +167,56 @@ int main (int argc, char* argv[]) {
         
     }//for
 
-    merkle_tree tree = merkle_tree();
+    return leaves;
+
+}
+
+
+
+int main (int argc, char* argv[]) {
+
+    auto start = chrono::high_resolution_clock::now();
+    //read files
+    auto start_read_file = chrono::high_resolution_clock::now();
+    std::vector<file_info *> files = fill_files(argv[1]);
     auto end_read_files = chrono::high_resolution_clock::now();
-    tree.build_tree(leaves);
+
+    //sort files
+    auto start_sort = chrono::high_resolution_clock::now();
+    q_sort(files, 0, files.size()-1);
+    auto end_sort = chrono::high_resolution_clock::now();
+    
+    //hash files
+    std::vector<Node *> leaves = hash_file(files);
+
+
+    merkle_tree tree = merkle_tree();
+    
+
+    for(int i = 0; i < 1000; i++)
+    {
+        auto start_build_tree = chrono::high_resolution_clock::now();
+        tree.build_tree(leaves, std::stoi(argv[2]));
+        auto end_build_tree = chrono::high_resolution_clock::now();
+
+        auto duration_build_tree = chrono::duration_cast<chrono::microseconds>(end_build_tree - start_build_tree);
+        std::cout << duration_build_tree.count() << std::endl;
+    }
+    
     
     auto end = chrono::high_resolution_clock::now();
+    
     auto duration = chrono::duration_cast<chrono::milliseconds>(end - start);
     auto duration_files = chrono::duration_cast<chrono::milliseconds>(end_read_files - start_read_file);
     auto duration_sort = chrono::duration_cast<chrono::milliseconds>(end_sort - start_sort);
-    auto duration_build_tree = duration - duration_files;
+    
 
-    tree.print_tree(tree.root);
+    /*tree.print_tree(tree.root);
 
     std::cout << duration.count() << "ms total" << std::endl;
     std::cout << duration_sort.count() << "ms sorting" << std::endl;
     std::cout << duration_files.count() << "ms gather and hash files" << std::endl;
-    std::cout << duration_build_tree.count() << "ms building tree" << std::endl;
+    */
 
     return 0;
 }

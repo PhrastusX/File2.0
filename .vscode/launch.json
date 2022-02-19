@@ -10,7 +10,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${fileDirname}/${fileBasenameNoExtension}",
-            "args": [],
+            "args": ["~/bitcoin"],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
             "environment": [],
