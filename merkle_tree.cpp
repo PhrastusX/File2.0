@@ -5,7 +5,6 @@
 
 
 
-#define KEY 123456789
 
 struct file_info
 {
@@ -30,15 +29,16 @@ struct merkle_tree {
 
     Node* root;
     Keccak keccak;
+    int hash_count = 0;
 
     void build_tree(std::vector<Node*> children, int BASE)
     {
 
         std::vector<Node*> parents;
-        std::string temp = std::to_string(KEY); //holds all the concatinated hashes
-        std::string hash = keccak(temp);
+        std::string temp;
+        std::string hash;
         int displacement = 0;
-        int toggle       = 1; //toggle add key 
+
 
         while(children.size() != 1){
 
@@ -54,14 +54,10 @@ struct merkle_tree {
                 }
 
                 hash = keccak(temp);
+                hash_count++;
                 parents.push_back(new Node(hash));
                 
-                //add the key or not
-                if(toggle == 1)
-                    {temp = std::to_string(KEY);}
-
-                else 
-                    {temp.clear();}
+                temp.clear();
 
                 for(int k = i; k < BASE + i; k++)
                 {
@@ -79,6 +75,7 @@ struct merkle_tree {
 
             
             hash = keccak(temp);
+            hash_count++;
             parents.push_back(new Node(hash));
 
             for(int n = 0; n < displacement; n++){
@@ -89,7 +86,6 @@ struct merkle_tree {
 
             
             displacement = 0;
-            toggle = 0;
             temp.clear();
             children = parents;
         }

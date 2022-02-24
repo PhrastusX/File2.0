@@ -135,7 +135,7 @@ std::string files_to_hash(std::string directory_path)
 
 }
 
-std::vector<Node *> hash_file(std::vector<file_info *> files, int BASE)
+std::vector<Node *> hash_file(std::vector<file_info *> files, int BASE, int key, int position, int &count)
 {
     //std::vector<std::string> file_name; //keeping track of file names
     //std::vector<unsigned char> file_rep; //file is stored in this vector
@@ -143,29 +143,52 @@ std::vector<Node *> hash_file(std::vector<file_info *> files, int BASE)
     std::string  temp, directory_path;
     std::string file_rep;
     Keccak keccak;
-    int count = 0;
+    int displacement = files.size() % BASE;
+    
+    
     
 
     for ( int i = 0; i < files.size() - BASE; i+= BASE ) 
     {
 
-        temp.clear();
-        file_rep.clear();
+        
 
         for(int j = 0; j < BASE; j++)
+        
         {
+            if (i+j == position -1){
+
+                file_rep += std::to_string(key);
+            }
 
             file_rep += files_to_hash(files[i+j]->directory);
         
         }
 
-           
         temp = keccak(file_rep);
+        
+        count++;
   
 
         leaves.push_back(new Node(temp));
+        temp.clear();
+        file_rep.clear();
+        
         
     }//for
+    if(displacement != 0)
+            {
+                for(int n = files.size() - displacement; n != files.size(); n++){
+                
+                file_rep += files_to_hash(files[n]->directory);
+                }
+
+            
+            temp = keccak(file_rep);
+            leaves.push_back(new Node(temp));
+            count++;
+
+            }
 
     return leaves;
 
@@ -176,6 +199,9 @@ std::vector<Node *> hash_file(std::vector<file_info *> files, int BASE)
 int main (int argc, char* argv[]) {
 
     int size = 0;
+    int key = 12345678;
+    int position = 100;
+    int num_of_hashes = 0;
 
     auto start = chrono::high_resolution_clock::now();
     //read files
@@ -191,31 +217,24 @@ int main (int argc, char* argv[]) {
     
     //hash files
     auto start_read_hash_files = chrono::high_resolution_clock::now();
-    std::vector<Node *> leaves = hash_file(files, std::stoi(argv[2]));
+    std::vector<Node *> leaves = hash_file(files, std::stoi(argv[2]), key, position, num_of_hashes);
     auto end_read_hash_files = chrono::high_resolution_clock::now();
 
 
     merkle_tree tree = merkle_tree();
     
+    //build tree
+    auto start_build_tree = chrono::high_resolution_clock::now();
+    tree.build_tree(leaves, std::stoi(argv[2]));
+    auto end_build_tree = chrono::high_resolution_clock::now();
 
-
-        auto start_build_tree = chrono::high_resolution_clock::now();
-        tree.build_tree(leaves, std::stoi(argv[2]));
-        auto end_build_tree = chrono::high_resolution_clock::now();
-
-        
-        auto duration_build_tree = chrono::duration_cast<chrono::milliseconds>(end_build_tree - start_build_tree);
-        
-  
-
-
-    
     
     auto end = chrono::high_resolution_clock::now();
     
     auto duration = chrono::duration_cast<chrono::milliseconds>(end - start);
     auto duration_files = chrono::duration_cast<chrono::milliseconds>(end_read_files - start_read_file);
     auto duration_sort = chrono::duration_cast<chrono::milliseconds>(end_sort - start_sort);
+    auto duration_build_tree = chrono::duration_cast<chrono::microseconds>(end_build_tree - start_build_tree);
     auto duration_hash = chrono::duration_cast<chrono::milliseconds>(end_read_hash_files - start_read_hash_files);
     
 
@@ -226,7 +245,10 @@ int main (int argc, char* argv[]) {
     std::cout << duration_files.count() << "ms find all files" << std::endl;
     
     std::cout << duration_hash.count() << "ms read and hash files" << std::endl;
-    std::cout << duration_build_tree.count() << "ms build tree" << std::endl;
+    std::cout << duration_build_tree.count() << "us build tree" << std::endl;
+
+    std::cout << "Number of hashes at base: " << num_of_hashes << " Number of hashes in tree: "<< tree.hash_count << std::endl;
+    std::cout << "Total: " << num_of_hashes + tree.hash_count << std::endl;
     
 
     return 0;
