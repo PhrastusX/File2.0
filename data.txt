@@ -1,6 +1,6 @@
 1000 rounds making tree with varying base
 
-Bitcoin V0.18 1847 files
+Bitcoin V0.18 1707 files
 2. mean: 9139.736 standard deviation: 5.509109211478749
 3. mean: 5922.237 standard deviation: 9.497843904329033
 4. mean: 4029.651 standard deviation: 6.033074771540628
@@ -9,7 +9,7 @@ Bitcoin V0.18 1847 files
 7. mean: 3633.039 standard deviation: 3.5662351968147084
 8. mean: 3308.413 standard deviation: 1.1839630192704498
 
-Bitcoin V0.19 1911 files
+Bitcoin V0.19 1762 files
 2. mean: 9229.22 standard deviation: 9.322424341339545
 3. mean: 6065.732 standard deviation: 9.555607786844336
 4. mean: 4092.459 standard deviation: 4.346799318924216
@@ -18,7 +18,7 @@ Bitcoin V0.19 1911 files
 7. mean: 3841.379 standard deviation: 8.16058609163582
 8. mean: 3252.389 standard deviation: 3.708741252635454
 
-Bitcoin V0.20 2094 files
+Bitcoin V0.20 1945 files
 2. mean: 10122.058 standard deviation: 9.128338656951774
 3. mean: 6591.159 standard deviation: 5.294278772316388
 4. mean: 4515.895 standard deviation: 5.096094580656837
@@ -27,7 +27,7 @@ Bitcoin V0.20 2094 files
 7. mean: 4129.528 standard deviation: 2.874014129401593
 8. mean: 3561.372 standard deviation: 3.6554276926236686
 
-Bitcoin V0.21 2225 files
+Bitcoin V0.21 2068 files
 2. mean: 10800.122 standard deviation: 8.139699694460479
 3. mean: 6990.647 standard deviation: 4.395325060902777
 4. mean: 4859.714 standard deviation: 8.749965040158735
@@ -36,7 +36,7 @@ Bitcoin V0.21 2225 files
 7. mean: 4312.167 standard deviation: 3.165455277049417
 8. mean: 3931.05 standard deviation: 2.0098526065361138
 
-master (current version) 2538 files
+master (current version) 2347 files
 2. mean: 12087.754 standard deviation: 10.205219717575908
 3. mean: 7895.171 standard deviation: 7.080411976643736
 4. mean: 5403.064 standard deviation: 9.698770845009175

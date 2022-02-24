@@ -113,57 +113,57 @@ void q_sort(std::vector<file_info *> &sorting_file, int start, int end)
     q_sort(sorting_file, p + 1, end);
 }
 
-std::vector<Node *> hash_file(std::vector<file_info *> files)
+std::string files_to_hash(std::string directory_path)
 {
-    std::vector<std::string> file_name; //keeping track of file names
-    std::vector<unsigned char> bin_file_rep; //file is stored in this vector
-    std::vector<Node * > leaves; //leaves for the merkle tree
+    std::vector<char> file;
+    
+    char c;
+
+
+    std::ifstream in_file(directory_path, std::ifstream::binary);
+
+    while(!in_file.eof())
+    {
+        in_file >> c;
+        file.push_back(c);
+    }
+    
+    
+    std::string bin_file_rep(file.begin(), file.end());
+            
+    return bin_file_rep;
+
+}
+
+std::vector<Node *> hash_file(std::vector<file_info *> files, int BASE)
+{
+    //std::vector<std::string> file_name; //keeping track of file names
+    //std::vector<unsigned char> file_rep; //file is stored in this vector
+    std::vector<Node *> leaves; //leaves for the merkle tree
     std::string  temp, directory_path;
+    std::string file_rep;
     Keccak keccak;
-    unsigned char c;
     int count = 0;
     
 
-    for ( int i = 0; i < files.size(); i++ ) {
+    for ( int i = 0; i < files.size() - BASE; i+= BASE ) 
+    {
 
-        
         temp.clear();
-        bin_file_rep.clear();
-        count++;
+        file_rep.clear();
 
-        directory_path = files[i]->directory;
+        for(int j = 0; j < BASE; j++)
+        {
 
+            file_rep += files_to_hash(files[i+j]->directory);
         
-            count++;
-            
-
-            std::ifstream in_file(directory_path, std::ifstream::binary);
-
-            while(!in_file.eof()){
-
-                in_file >> c;
-
-                bin_file_rep.push_back(c);
-
-
-                
-
-            }//while
-
-            //puts the character arry of file into ss to be hashed
-            std::string ss(bin_file_rep.begin(), bin_file_rep.end() - 1);
+        }
 
            
+        temp = keccak(file_rep);
+  
 
-            temp = keccak(ss);
-
-            leaves.push_back(new Node(temp));
-            leaves.back()->file_directory = directory_path;
-            leaves.back()->count = i;
-
-            file_name.push_back(directory_path);
-
-            in_file.close();
+        leaves.push_back(new Node(temp));
         
     }//for
 
@@ -175,33 +175,40 @@ std::vector<Node *> hash_file(std::vector<file_info *> files)
 
 int main (int argc, char* argv[]) {
 
+    int size = 0;
+
     auto start = chrono::high_resolution_clock::now();
     //read files
     auto start_read_file = chrono::high_resolution_clock::now();
     std::vector<file_info *> files = fill_files(argv[1]);
     auto end_read_files = chrono::high_resolution_clock::now();
 
+    size = files.size();
     //sort files
     auto start_sort = chrono::high_resolution_clock::now();
     q_sort(files, 0, files.size()-1);
     auto end_sort = chrono::high_resolution_clock::now();
     
     //hash files
-    std::vector<Node *> leaves = hash_file(files);
+    auto start_read_hash_files = chrono::high_resolution_clock::now();
+    std::vector<Node *> leaves = hash_file(files, std::stoi(argv[2]));
+    auto end_read_hash_files = chrono::high_resolution_clock::now();
 
 
     merkle_tree tree = merkle_tree();
     
 
-    for(int i = 0; i < 1000; i++)
-    {
+
         auto start_build_tree = chrono::high_resolution_clock::now();
         tree.build_tree(leaves, std::stoi(argv[2]));
         auto end_build_tree = chrono::high_resolution_clock::now();
 
-        auto duration_build_tree = chrono::duration_cast<chrono::microseconds>(end_build_tree - start_build_tree);
-        std::cout << duration_build_tree.count() << std::endl;
-    }
+        
+        auto duration_build_tree = chrono::duration_cast<chrono::milliseconds>(end_build_tree - start_build_tree);
+        
+  
+
+
     
     
     auto end = chrono::high_resolution_clock::now();
@@ -209,14 +216,18 @@ int main (int argc, char* argv[]) {
     auto duration = chrono::duration_cast<chrono::milliseconds>(end - start);
     auto duration_files = chrono::duration_cast<chrono::milliseconds>(end_read_files - start_read_file);
     auto duration_sort = chrono::duration_cast<chrono::milliseconds>(end_sort - start_sort);
+    auto duration_hash = chrono::duration_cast<chrono::milliseconds>(end_read_hash_files - start_read_hash_files);
     
 
-    /*tree.print_tree(tree.root);
+    tree.print_tree(tree.root);
 
     std::cout << duration.count() << "ms total" << std::endl;
     std::cout << duration_sort.count() << "ms sorting" << std::endl;
-    std::cout << duration_files.count() << "ms gather and hash files" << std::endl;
-    */
+    std::cout << duration_files.count() << "ms find all files" << std::endl;
+    
+    std::cout << duration_hash.count() << "ms read and hash files" << std::endl;
+    std::cout << duration_build_tree.count() << "ms build tree" << std::endl;
+    
 
     return 0;
 }

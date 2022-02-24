@@ -101,6 +101,25 @@ struct merkle_tree {
 
 
     }
+
+    ~merkle_tree(){
+        delete root;
+    }
+
+    void destroy_tree(Node *n)
+    {
+        if(!n->data_ptr.empty()){
+            
+            for(int i = 0; i < n->data_ptr.size(); i++){
+                destroy_tree(n->data_ptr[i]);
+            }
+            
+        }
+
+        delete n;
+        
+        
+    }
     
 
     void print_tree(Node *n)
