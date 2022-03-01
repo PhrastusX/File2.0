@@ -99,6 +99,7 @@ struct merkle_tree {
     }
 
     ~merkle_tree(){
+        //lol fix this
         delete root;
     }
 
@@ -117,7 +118,8 @@ struct merkle_tree {
         
     }
     
-
+    //search?
+    //replace
     void print_tree(Node *n)
         {
         
