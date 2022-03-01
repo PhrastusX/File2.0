@@ -240,6 +240,7 @@ int main (int argc, char* argv[]) {
 
     tree.print_tree(tree.root);
 
+    std::cout << "Files: "<< size << std::endl;
     std::cout << duration.count() << "ms total" << std::endl;
     std::cout << duration_sort.count() << "ms sorting" << std::endl;
     std::cout << duration_files.count() << "ms find all files" << std::endl;
