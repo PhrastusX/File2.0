@@ -48,8 +48,6 @@ std::vector<file_info *> fill_files(std::string directory)
 
             filesys::path pathObj(directory_path);
             
-            
-
             files.push_back(new(file_info));
 
             files.back()->size = filesys::file_size(pathObj);
@@ -135,15 +133,28 @@ std::string files_to_hash(std::string directory_path)
 
 }
 
-std::vector<Node *> hash_file(std::vector<file_info *> files, int BASE, int key, int position, int &count)
+std::vector<Node *> hash_file(std::vector<file_info *> files, int BASE, char * v, int &count)
 {
     //std::vector<std::string> file_name; //keeping track of file names
     //std::vector<unsigned char> file_rep; //file is stored in this vector
     std::vector<Node *> leaves; //leaves for the merkle tree
     std::string  temp, directory_path;
     std::string file_rep;
+    std::vector<char> key_value;
     Keccak keccak;
+    char c;
     int displacement = files.size() % BASE;
+
+    std::ifstream key_file(v);
+    while(!key_file.eof()){
+
+        key_file >> c;
+        key_value.push_back(c);
+    }
+    std::string key_hash(key_value.begin(), key_value.end() -1 );
+    
+
+    leaves.push_back(new Node(key_hash));
     
     
     
@@ -156,10 +167,7 @@ std::vector<Node *> hash_file(std::vector<file_info *> files, int BASE, int key,
         for(int j = 0; j < BASE; j++)
         
         {
-            if (i+j == position -1){
-
-                file_rep += std::to_string(key);
-            }
+  
 
             file_rep += files_to_hash(files[i+j]->directory);
         
@@ -198,10 +206,14 @@ std::vector<Node *> hash_file(std::vector<file_info *> files, int BASE, int key,
 
 int main (int argc, char* argv[]) {
 
-    int size = 0;
-    int key = 12345678;
-    int position = 100;
+    int size = 1; //starts at one to account for the key getting inserted into the tree
+    int key = 0;
+    char c;
     int num_of_hashes = 0;
+    std::vector<char> key_value;
+    std::vector<Node*> leaves;
+
+ 
 
     auto start = chrono::high_resolution_clock::now();
     //read files
@@ -214,11 +226,17 @@ int main (int argc, char* argv[]) {
     auto start_sort = chrono::high_resolution_clock::now();
     q_sort(files, 0, files.size()-1);
     auto end_sort = chrono::high_resolution_clock::now();
+
+    //insert K file into vector.
+
     
+ 
     //hash files
     auto start_read_hash_files = chrono::high_resolution_clock::now();
-    std::vector<Node *> leaves = hash_file(files, std::stoi(argv[2]), key, position, num_of_hashes);
+    leaves = hash_file(files, std::stoi(argv[2]), argv[3], num_of_hashes);
     auto end_read_hash_files = chrono::high_resolution_clock::now();
+
+    
 
 
     merkle_tree tree = merkle_tree();
