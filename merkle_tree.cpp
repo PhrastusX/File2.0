@@ -84,21 +84,10 @@ struct merkle_tree {
                 }
             }
 
-<<<<<<< HEAD
-            if(n->left || n->right){
-                std::cout <<"Node hash: " <<  n->hash << "\n"  << "Left hash: " << n->left->hash  << "\n" << "Right Hash: " << n->right->hash<< "\n" << std::endl;
-            }
-            else{
-            
-                std::cout << "Node number: " << n->count <<"\n"+ n->hash << "\n" << n->file_directory << "\n\n";
-            }
-        
-=======
             
             displacement = 0;
             temp.clear();
             children = parents;
->>>>>>> 0621a4975eb2aa24b9fa725041d6cf3a73f56f2a
         }
         
         

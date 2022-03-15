@@ -44,15 +44,9 @@ std::vector<file_info *> fill_files(std::string directory)
 
         directory_path = dir->path().string();
 
-<<<<<<< HEAD
-        if(checkIfFile(h)){
-            count++;
-            
-=======
         if(checkIfFile(directory_path)){
 
             filesys::path pathObj(directory_path);
->>>>>>> 0621a4975eb2aa24b9fa725041d6cf3a73f56f2a
             
             files.push_back(new(file_info));
 
@@ -126,14 +120,6 @@ std::string files_to_hash(std::string directory_path)
 
     std::ifstream in_file(directory_path, std::ifstream::binary);
 
-<<<<<<< HEAD
-            leaves.push_back(new Node(temp));
-            leaves.back()->left = NULL;
-            leaves.back()->right = NULL;
-            leaves.back()->file_directory = h;
-            leaves.back()->count = count;
-
-=======
     while(!in_file.eof())
     {
         in_file >> c;
@@ -144,7 +130,6 @@ std::string files_to_hash(std::string directory_path)
     std::string bin_file_rep(file.begin(), file.end());
             
     return bin_file_rep;
->>>>>>> 0621a4975eb2aa24b9fa725041d6cf3a73f56f2a
 
 }
 
