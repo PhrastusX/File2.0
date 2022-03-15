@@ -1,0 +1,9 @@
+f9fa2ba1bdad3d6b36c41d33615e633652a749d92c7bfd7ceded4288a638ec1f
+Files: 1087
+519ms total
+0ms sorting
+4ms find all files
+513ms read and hash files
+2004us build tree
+Number of hashes at base: 544 Number of hashes in tree: 547
+Total: 1091

@@ -1,0 +1,9 @@
+735925b88efd8c4149ac47cbf5571126c5ce4cd2b6cd1558032cfc501ef42813
+Files: 1736
+758ms total
+0ms sorting
+6ms find all files
+749ms read and hash files
+1878us build tree
+Number of hashes at base: 579 Number of hashes in tree: 292
+Total: 871

@@ -3,15 +3,25 @@
 #include <string>
 #include <iostream>
 
+
+
+
+struct file_info
+{
+    std::string directory;
+    double size;
+
+};
+
 struct Node {
     int count;
     std::string hash;
-    Node *left;
-    Node *right;
     std::string file_directory;
+    std::vector<Node*> data_ptr;
 
     Node(std::string data){
         hash = data;
+        
     }
 };
 
@@ -19,50 +29,62 @@ struct merkle_tree {
 
     Node* root;
     Keccak keccak;
+    int hash_count = 0;
 
-    merkle_tree(std::vector<Node*> data) {
+    void build_tree(std::vector<Node*> children, int BASE)
+    {
 
-        std::vector<Node*> nodes;
+        std::vector<Node*> parents;
+        std::string temp;
+        std::string hash;
+        int displacement = 0;
 
-        while (data.size() != 1) 
-        {
 
-            for (unsigned int l = 0, n = 0; l < data.size(); l = l + 2, n++) 
+        while(children.size() != 1){
+
+            displacement = children.size() % BASE;
+
+            parents.clear();
+
+            for(int i = 0; i < children.size() - displacement; i+=BASE)
             {
-                if (l != data.size() - 1) 
-                { 
-
-                    nodes.push_back(new Node(keccak(data[l]->hash + data[l+1]->hash))); 
-
-                    nodes[n]->left = data[l]; 
-                    nodes[n]->right = data[l+1];
-
-                }
-            
-                else 
+                for(int j = i; j < BASE + i; j++)
                 {
-                    nodes.push_back(data[l]);
+                    temp = temp + children[j]->hash;
+                }
+
+                hash = keccak(temp);
+                hash_count++;
+                parents.push_back(new Node(hash));
+                
+                temp.clear();
+
+                for(int k = i; k < BASE + i; k++)
+                {
+                    parents.back()->data_ptr.push_back(children[k]);
+                }
+
+            }
+
+            if(displacement != 0)
+            {
+                for(int n = children.size() - displacement; n != children.size(); n++){
+                
+                temp = temp + children[n]->hash;
+                }
+
+            
+            hash = keccak(temp);
+            hash_count++;
+            parents.push_back(new Node(hash));
+
+            for(int n = 0; n < displacement; n++){
+                
+                parents.back()->data_ptr.push_back(children[n]);
                 }
             }
-            data = nodes;
-            nodes.clear();
 
-        }
-        this->root = data[0];
-    }
-
-    void print_tree(Node *n)
-        {
-        if (n) {
-            if (n->left) {
-                print_tree(n->left);
-                std::cout << std::endl;
-            }
-            if (n->right) {
-                print_tree(n->right);
-                std::cout << std::endl;
-            }
-
+<<<<<<< HEAD
             if(n->left || n->right){
                 std::cout <<"Node hash: " <<  n->hash << "\n"  << "Left hash: " << n->left->hash  << "\n" << "Right Hash: " << n->right->hash<< "\n" << std::endl;
             }
@@ -71,34 +93,55 @@ struct merkle_tree {
                 std::cout << "Node number: " << n->count <<"\n"+ n->hash << "\n" << n->file_directory << "\n\n";
             }
         
+=======
+            
+            displacement = 0;
+            temp.clear();
+            children = parents;
+>>>>>>> 0621a4975eb2aa24b9fa725041d6cf3a73f56f2a
         }
+        
+        
+        
+        this->root = parents[0];
+
+
+
+    }
+
+    ~merkle_tree(){
+        //lol fix this
+        delete root;
+    }
+
+    void destroy_tree(Node *n)
+    {
+        if(!n->data_ptr.empty()){
+            
+            for(int i = 0; i < n->data_ptr.size(); i++){
+                destroy_tree(n->data_ptr[i]);
+            }
+            
+        }
+
+        delete n;
+        
+        
+    }
+    
+    //search?
+    //replace
+    void print_tree(Node *n)
+        {
+        
+        if (n)
+        {
+            std::cout << n->hash << std::endl;
+        }
+        
+            
+            
+        
     }
     
 };
-/*
-int main() {
-
-    std::vector<Node*> leaves;
-    Keccak keccak;
-
-    leaves.push_back(new Node(keccak("somedata")));
-    leaves.push_back(new Node(keccak("somedata")));
-    leaves.push_back(new Node(keccak("somedata")));
-    leaves.push_back(new Node(keccak("somedata")));
-    leaves.push_back(new Node(keccak("somedata")));
-
-    // initialize leaves
-    for (unsigned int i = 0; i < leaves.size(); i++) {
-        leaves[i]->left = NULL;
-        leaves[i]->right = NULL;
-    }
-
-    merkle_tree *hashTree = new merkle_tree(leaves);
-
-
-    
-    hashTree->print_tree(hashTree->root);
-    
-
-    return 0;
-}*/
