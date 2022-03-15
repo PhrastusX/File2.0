@@ -3,9 +3,6 @@
 #include <string>
 #include <iostream>
 
-
-
-
 struct file_info
 {
     std::string directory;
