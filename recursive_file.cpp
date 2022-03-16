@@ -7,6 +7,7 @@ int main (int argc, char* argv[]) {
 
     int size = 1; //starts at one to account for the key getting inserted into the tree
     int key = 0;
+    int displacement;
     char c;
     int num_of_hashes = 0;
     std::vector<char> key_value;
@@ -20,7 +21,14 @@ int main (int argc, char* argv[]) {
     std::vector<file_info *> files = fill_files(argv[1]);
     auto end_read_files = chrono::high_resolution_clock::now();
 
-    size = files.size();
+    size += files.size();
+    displacement = std::stoi(argv[2]) - (size % std::stoi(argv[2])) - 1;
+
+    if(displacement != 0){
+        for(int i = displacement; i > 0; i--){
+            files.push_back(files.back());
+        }
+    }
     //sort files
     auto start_sort = chrono::high_resolution_clock::now();
     q_sort(files, 0, files.size()-1);

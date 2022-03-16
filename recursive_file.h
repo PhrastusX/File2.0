@@ -56,7 +56,27 @@ std::vector<file_info *> fill_files(std::string directory)
     return files;
 }
 
+std::string files_to_hash(std::string directory_path)
+{
+    std::vector<char> file;
+    
+    char c;
 
+
+    std::ifstream in_file(directory_path, std::ifstream::binary);
+
+    while(!in_file.eof())
+    {
+        in_file >> c;
+        file.push_back(c);
+    }
+    
+    
+    std::string bin_file_rep(file.begin(), file.end());
+            
+    return bin_file_rep;
+
+}
 std::vector<Node *> hash_file(std::vector<file_info *> files, int BASE, char * v, int &count)
 {
     //std::vector<std::string> file_name; //keeping track of file names
@@ -108,46 +128,14 @@ std::vector<Node *> hash_file(std::vector<file_info *> files, int BASE, char * v
         
         
     }//for
-    if(displacement != 0)
-            {
-                for(int n = files.size() - displacement; n != files.size(); n++){
-                
-                file_rep += files_to_hash(files[n]->directory);
-                }
 
-            
-            temp = keccak(file_rep);
-            leaves.push_back(new Node(temp));
-            count++;
-
-            }
 
     return leaves;
 
 }
 
 
-std::string files_to_hash(std::string directory_path)
-{
-    std::vector<char> file;
-    
-    char c;
 
-
-    std::ifstream in_file(directory_path, std::ifstream::binary);
-
-    while(!in_file.eof())
-    {
-        in_file >> c;
-        file.push_back(c);
-    }
-    
-    
-    std::string bin_file_rep(file.begin(), file.end());
-            
-    return bin_file_rep;
-
-}
 
 
 int partition(std::vector<file_info *> &sorting_file, int start, int end)

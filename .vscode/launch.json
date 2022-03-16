@@ -10,7 +10,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${fileDirname}/${fileBasenameNoExtension}",
-            "args": ["~/bitcoin/bitcoin-0.18", "2"] , 
+            "args": ["~/Attack_Lab", "3", "key_file"] , 
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
             "environment": [],
