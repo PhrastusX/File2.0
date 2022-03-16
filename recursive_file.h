@@ -56,87 +56,6 @@ std::vector<file_info *> fill_files(std::string directory)
     return files;
 }
 
-std::string files_to_hash(std::string directory_path)
-{
-    std::vector<char> file;
-    
-    char c;
-
-
-    std::ifstream in_file(directory_path, std::ifstream::binary);
-
-    while(!in_file.eof())
-    {
-        in_file >> c;
-        file.push_back(c);
-    }
-    
-    
-    std::string bin_file_rep(file.begin(), file.end());
-            
-    return bin_file_rep;
-
-}
-std::vector<Node *> hash_file(std::vector<file_info *> files, int BASE, char * v, int &count)
-{
-    //std::vector<std::string> file_name; //keeping track of file names
-    //std::vector<unsigned char> file_rep; //file is stored in this vector
-    std::vector<Node *> leaves; //leaves for the merkle tree
-    std::string  temp, directory_path;
-    std::string file_rep;
-    std::vector<char> key_value;
-    Keccak keccak;
-    char c;
-    int displacement = files.size() % BASE;
-
-    std::ifstream key_file(v);
-    while(!key_file.eof()){
-
-        key_file >> c;
-        key_value.push_back(c);
-    }
-    std::string key_hash(key_value.begin(), key_value.end() -1 );
-    
-
-    leaves.push_back(new Node(key_hash));
-    
-    
-    
-
-    for ( int i = 0; i < files.size() - BASE; i+= BASE ) 
-    {
-
-        
-
-        for(int j = 0; j < BASE; j++)
-        
-        {
-  
-
-            file_rep += files_to_hash(files[i+j]->directory);
-        
-        }
-
-        temp = keccak(file_rep);
-        
-        count++;
-  
-
-        leaves.push_back(new Node(temp));
-        temp.clear();
-        file_rep.clear();
-        
-        
-    }//for
-
-
-    return leaves;
-
-}
-
-
-
-
 
 int partition(std::vector<file_info *> &sorting_file, int start, int end)
 {
@@ -190,6 +109,95 @@ void q_sort(std::vector<file_info *> &sorting_file, int start, int end)
 }
 
 
+std::string files_to_hash(std::string directory_path)
+{
+    std::vector<char> file;
+    
+    char c;
 
 
+    std::ifstream in_file(directory_path, std::ifstream::binary);
 
+    while(!in_file.eof())
+    {
+        in_file >> c;
+        file.push_back(c);
+    }
+    
+    
+    std::string bin_file_rep(file.begin(), file.end());
+            
+    return bin_file_rep;
+
+}
+
+
+std::vector<Node *> hash_file(std::vector<file_info *> files, int BASE, std::string v, int &count)
+{
+    //std::vector<std::string> file_name; //keeping track of file names
+    //std::vector<unsigned char> file_rep; //file is stored in this vector
+    std::vector<Node *> leaves; //leaves for the merkle tree
+    std::string  temp, directory_path;
+    std::string file_rep;
+    std::vector<char> key_value;
+    Keccak keccak;
+    char c;
+    int displacement = files.size() % BASE;
+
+    std::ifstream key_file(v);
+    while(!key_file.eof()){
+
+        key_file >> c;
+        key_value.push_back(c);
+    }
+    std::string key_hash(key_value.begin(), key_value.end() -1 );
+    
+
+    //key gets appended to first file
+    file_rep = key_hash;
+    
+    
+    
+
+    for ( int i = 0; i < files.size() - displacement; i+= BASE ) 
+    {
+
+        
+
+        for(int j = 0; j < BASE; j++)
+        
+        {
+  
+
+            file_rep += files_to_hash(files[i+j]->directory);
+        
+        }
+
+        temp = keccak(file_rep);
+        
+        count++;
+  
+
+        leaves.push_back(new Node(temp));
+        temp.clear();
+        file_rep.clear();
+        
+        
+    }//for
+    if(displacement != 0)
+            {
+                for(int n = files.size() - displacement; n != files.size(); n++){
+                
+                file_rep += files_to_hash(files[n]->directory);
+                }
+
+            
+            temp = keccak(file_rep);
+            leaves.push_back(new Node(temp));
+            count++;
+
+            }
+
+    return leaves;
+
+}

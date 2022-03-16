@@ -6,7 +6,6 @@
 int main (int argc, char* argv[]) {
 
     int size = 1; //starts at one to account for the key getting inserted into the tree
-    int key = 0;
     int displacement;
     char c;
     int num_of_hashes = 0;
@@ -22,13 +21,7 @@ int main (int argc, char* argv[]) {
     auto end_read_files = chrono::high_resolution_clock::now();
 
     size += files.size();
-    displacement = std::stoi(argv[2]) - (size % std::stoi(argv[2])) - 1;
 
-    if(displacement != 0){
-        for(int i = displacement; i > 0; i--){
-            files.push_back(files.back());
-        }
-    }
     //sort files
     auto start_sort = chrono::high_resolution_clock::now();
     q_sort(files, 0, files.size()-1);
@@ -40,7 +33,7 @@ int main (int argc, char* argv[]) {
  
     //hash files
     auto start_read_hash_files = chrono::high_resolution_clock::now();
-    leaves = hash_file(files, std::stoi(argv[2]), argv[3], num_of_hashes);
+    leaves = hash_file(files, std::stoi(argv[2]), "key_file", num_of_hashes);
     auto end_read_hash_files = chrono::high_resolution_clock::now();
 
     

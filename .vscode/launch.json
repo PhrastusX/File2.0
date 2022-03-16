@@ -10,7 +10,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${fileDirname}/${fileBasenameNoExtension}",
-            "args": ["~/Attack_Lab", "3", "key_file"] , 
+            "args": ["~/BombLab/", "2",] , 
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
             "environment": [],

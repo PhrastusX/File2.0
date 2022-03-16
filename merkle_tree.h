@@ -13,8 +13,7 @@ struct file_info
 struct Node {
     int count;
     std::string hash;
-    std::string file_directory;
-    std::vector<Node*> data_ptr;
+    std::vector<Node *> data_ptr;
 
     Node(std::string data){
         hash = data;
@@ -118,14 +117,25 @@ struct merkle_tree {
     //search?
     //replace
     void print_tree(Node *n)
-        {
-        
-        if (n)
-        {
-            std::cout << n->hash << std::endl;
+    {
+        if(n->data_ptr.empty()){
+            std::cout<< ". " << n->hash << std::endl;
         }
-        
+        else
+        {
+            std::cout<< ". " << n->hash << std::endl;
+            print_tree(n->data_ptr[0]);
+
+            if(n->data_ptr[1]){
+                print_tree(n->data_ptr[1]);
+            }
             
+            
+            
+                
+                    
+
+        }
             
         
     }
