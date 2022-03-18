@@ -5,7 +5,7 @@
 
 int main (int argc, char* argv[]) {
 
-    int size = 1; //starts at one to account for the key getting inserted into the tree
+    int size = 0; //starts at one to account for the key getting inserted into the tree
     int displacement;
     char c;
     int num_of_hashes = 0;
@@ -13,27 +13,34 @@ int main (int argc, char* argv[]) {
     int additional_files;
     std::vector<char> key_value;
     std::vector<Node*> leaves;
+    std::vector<Node*> files;//files do not become part of tree
 
- 
+
+    
+
+    files.push_back(new Node());
+    files.back()->directory = "key_file";
 
     auto start = chrono::high_resolution_clock::now();
     //read files
     auto start_read_file = chrono::high_resolution_clock::now();
-    std::vector<file_info *> files = fill_files(argv[1]);
+    fill_files( argv[1], files);
     auto end_read_files = chrono::high_resolution_clock::now();
 
-    size += files.size();
+    size = files.size();
 
     //sort files
     auto start_sort = chrono::high_resolution_clock::now();
     q_sort(files, 0, files.size()-1);
     auto end_sort = chrono::high_resolution_clock::now();
 
-    check = std::ceil(std::::log2(size));
+
+    //this little bit fills the rest of the tree with hashes.
+    check = std::ceil(std::log2(size));
 
     additional_files = pow(2,check) - size;
 
-    for(int i = 0; i < additional_files; i++){
+    for(int i = 1; i <= additional_files; i++){
         files.push_back(files[i]);
     }
 
@@ -43,7 +50,12 @@ int main (int argc, char* argv[]) {
  
     //hash files
     auto start_read_hash_files = chrono::high_resolution_clock::now();
-    leaves = hash_file(files, std::stoi(argv[2]), "key_file", num_of_hashes);
+
+   
+    leaves = hash_file(files, std::stoi(argv[2]), num_of_hashes);
+    
+   
+   
     auto end_read_hash_files = chrono::high_resolution_clock::now();
 
     
@@ -52,8 +64,11 @@ int main (int argc, char* argv[]) {
     merkle_tree tree = merkle_tree();
     
     //build tree
+
     auto start_build_tree = chrono::high_resolution_clock::now();
-    tree.build_tree(leaves, std::stoi(argv[2]));
+    //for(int i = 0; i < 10000; i ++){
+        tree.build_tree(leaves, std::stoi(argv[2]));
+    //}
     auto end_build_tree = chrono::high_resolution_clock::now();
 
     

@@ -27,10 +27,8 @@ bool checkIfFile(std::string filePath)
 }
 
 
-std::vector<file_info *> fill_files(std::string directory)
+void fill_files(std::string directory, std::vector<Node *> &files)
 {
-    std::vector<file_info*> files; //keeping track of the file paths
-    
     
     std::string directory_path;
     double file_size;
@@ -45,7 +43,7 @@ std::vector<file_info *> fill_files(std::string directory)
 
             filesys::path pathObj(directory_path);
             
-            files.push_back(new(file_info));
+            files.push_back(new Node());
 
             files.back()->size = filesys::file_size(pathObj);
             files.back()->directory = directory_path;
@@ -54,11 +52,11 @@ std::vector<file_info *> fill_files(std::string directory)
         }
     
     }
-    return files;
+    
 }
 
 
-int partition(std::vector<file_info *> &sorting_file, int start, int end)
+int partition(std::vector<Node *> &sorting_file, int start, int end)
 {
     int pivot = sorting_file.at(start)->size;
 
@@ -93,7 +91,7 @@ int partition(std::vector<file_info *> &sorting_file, int start, int end)
 }
 
 
-void q_sort(std::vector<file_info *> &sorting_file, int start, int end)
+void q_sort(std::vector<Node *> &sorting_file, int start, int end)
 {
     // base case
     if (start >= end)
@@ -133,7 +131,7 @@ std::string files_to_hash(std::string directory_path)
 }
 
 
-std::vector<Node *> hash_file(std::vector<file_info *> files, int BASE, std::string v, int &count)
+std::vector<Node *> hash_file(std::vector<Node *> files, int BASE, int &count)
 {
     //std::vector<std::string> file_name; //keeping track of file names
     //std::vector<unsigned char> file_rep; //file is stored in this vector
@@ -145,19 +143,6 @@ std::vector<Node *> hash_file(std::vector<file_info *> files, int BASE, std::str
     char c;
     int displacement = files.size() % BASE;
 
-    std::ifstream key_file(v);
-    while(!key_file.eof()){
-
-        key_file >> c;
-        key_value.push_back(c);
-    }
-    std::string key_hash(key_value.begin(), key_value.end() -1 );
-    
-
-    leaves.push_back(new Node(key_hash));
-    
-    
-    
 
     for ( int i = 0; i < files.size() - displacement; i+= BASE ) 
     {
