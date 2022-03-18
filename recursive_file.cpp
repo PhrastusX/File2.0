@@ -71,9 +71,9 @@ int main (int argc, char* argv[]) {
     //build tree
 
     auto start_build_tree = chrono::high_resolution_clock::now();
-    //for(int i = 0; i < 10000; i ++){
+    for(int i = 0; i < 10000; i ++){
         tree.build_tree(leaves, std::stoi(argv[2]));
-    //}
+    }
     auto end_build_tree = chrono::high_resolution_clock::now();
 
     

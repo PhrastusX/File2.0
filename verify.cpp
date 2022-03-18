@@ -5,6 +5,10 @@
 #include <iostream>
 #include <string>
 #include <regex>
+#include <chrono>
+
+
+namespace chrono = std::chrono;
 
 void print_hash(std::vector<std::string> p){
 
@@ -37,10 +41,23 @@ std::string files_to_hash(std::string directory_path)
 
 }
 
+std::string verify(int &hash_comps, std::string next, std::vector<std::string> hashes, Keccak keccak){
+
+    for(int i = 0; i < hashes.size(); i++){
+        
+        std::string temp = hashes[i];
+
+        next = keccak(next + temp);
+        hash_comps++;
+    }    
+
+    return next;
+}
+
 int main(void){
 
-    Keccak keccak;
     
+    Keccak keccak;
     std::string buffer;
     std::ifstream in("hash.txt");
 
@@ -68,7 +85,7 @@ int main(void){
     while(!in.eof()){
         std::getline(in, buffer);
         if(std::regex_search(buffer, index, std::regex("[0-9]*,1\\)"))){
-            std::cout << index[0] << std::endl;
+           
             coordinates.push_back(index[0]);
 
 
@@ -76,7 +93,7 @@ int main(void){
 
             std::string s_hash = hash[0];
             s_hash = s_hash.substr(1,s_hash.length());
-            std::cout << s_hash << std::endl;
+          
             hashes.push_back(s_hash);
 
             }   
@@ -87,16 +104,22 @@ int main(void){
        
     }
 
+    
+    
+    
+
     int hash_comps = 1;
-    std::string next = keccak(hash_file + first_file);;
-    for(int i = 0; i < hashes.size(); i++){
-        
-        std::string temp = hashes[i];
+    std::string next = keccak(hash_file + first_file);
 
-        next = keccak(next + temp);
-        hash_comps++;
+    auto start_verify = chrono::high_resolution_clock::now();
+    
+    for(int i = 0; i < 10000; i++){
+    next = verify(hash_comps,next,hashes, keccak);
     }
+    auto end_verify = chrono::high_resolution_clock::now();
 
+    auto duration_verify = chrono::duration_cast<chrono::microseconds>(end_verify - start_verify);
+    std::cout << duration_verify.count() << " us" << std::endl;
     std::cout << hash_comps << std::endl;
     std::cout << next << std::endl;
 

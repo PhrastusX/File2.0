@@ -2046,10 +2046,10 @@
 0,1022) 4a6e52cadc50f4f06190f9772fc888f55c6e892aa7b4b90fd94448641a98efea
 0,1023) 78346f69a5daaf81ec22403e7b289bd54405ee7a7bfbf1944b621b2cf986f7ae
 Files: 2048
-2091ms total
+2101ms total
 0ms sorting
-7ms find all files
-2079ms read and hash files
-3984us build tree
+9ms find all files
+2087ms read and hash files
+4029us build tree
 Number of hashes at base: 1024 Number of hashes in tree: 1023
 Total: 2047
