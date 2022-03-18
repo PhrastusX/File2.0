@@ -118,8 +118,9 @@ struct merkle_tree {
     //replace
     void print_tree(Node *n)
     {
+        //base case
         if(n->data_ptr.empty()){
-            std::cout<< ". " << n->hash << std::endl;
+            std::cout<< "Child " << n->hash << std::endl;
         }
         else
         {
@@ -130,11 +131,6 @@ struct merkle_tree {
                 print_tree(n->data_ptr[1]);
             }
             
-            
-            
-                
-                    
-
         }
             
         

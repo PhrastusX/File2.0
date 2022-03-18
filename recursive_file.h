@@ -5,6 +5,7 @@
 #include <string>
 #include <filesystem>
 #include <chrono>
+#include <cmath>
 
 namespace filesys = std::filesystem;
 namespace chrono = std::chrono;
@@ -153,8 +154,7 @@ std::vector<Node *> hash_file(std::vector<file_info *> files, int BASE, std::str
     std::string key_hash(key_value.begin(), key_value.end() -1 );
     
 
-    //key gets appended to first file
-    file_rep = key_hash;
+    leaves.push_back(new Node(key_hash));
     
     
     

@@ -9,6 +9,8 @@ int main (int argc, char* argv[]) {
     int displacement;
     char c;
     int num_of_hashes = 0;
+    double check;
+    int additional_files;
     std::vector<char> key_value;
     std::vector<Node*> leaves;
 
@@ -27,7 +29,15 @@ int main (int argc, char* argv[]) {
     q_sort(files, 0, files.size()-1);
     auto end_sort = chrono::high_resolution_clock::now();
 
-    //insert K file into vector.
+    check = std::ceil(std::::log2(size));
+
+    additional_files = pow(2,check) - size;
+
+    for(int i = 0; i < additional_files; i++){
+        files.push_back(files[i]);
+    }
+
+    size = files.size();
 
     
  
