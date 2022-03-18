@@ -124,7 +124,7 @@ std::string files_to_hash(std::string directory_path)
     }
     
     
-    std::string bin_file_rep(file.begin(), file.end());
+    std::string bin_file_rep(file.begin(), file.end()-1);
             
     return bin_file_rep;
 
@@ -141,10 +141,9 @@ std::vector<Node *> hash_file(std::vector<Node *> files, int BASE, int &count)
     std::vector<char> key_value;
     Keccak keccak;
     char c;
-    int displacement = files.size() % BASE;
 
 
-    for ( int i = 0; i < files.size() - displacement; i+= BASE ) 
+    for ( int i = 0; i < files.size(); i+= BASE ) 
     {
 
         
@@ -169,19 +168,7 @@ std::vector<Node *> hash_file(std::vector<Node *> files, int BASE, int &count)
         
         
     }//for
-    if(displacement != 0)
-            {
-                for(int n = files.size() - displacement; n != files.size(); n++){
-                
-                file_rep += files_to_hash(files[n]->directory);
-                }
-
-            
-            temp = keccak(file_rep);
-            leaves.push_back(new Node(temp));
-            count++;
-
-            }
+   
 
     return leaves;
 

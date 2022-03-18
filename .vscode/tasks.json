@@ -8,7 +8,7 @@
                 "-fdiagnostics-color=always",
                 "-std=c++17",
                 "-g",
-                "${file}", "keccak.cpp",
+                "${file}",
                 "-o",
                 "${fileDirname}/${fileBasenameNoExtension}"
             ],

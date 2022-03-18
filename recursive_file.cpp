@@ -6,20 +6,20 @@
 int main (int argc, char* argv[]) {
 
     int size = 0; //starts at one to account for the key getting inserted into the tree
-    int displacement;
     char c;
-    int num_of_hashes = 0;
+    int num_of_hashes = 0; //number of hashes at root
     double check;
     int additional_files;
     std::vector<char> key_value;
     std::vector<Node*> leaves;
     std::vector<Node*> files;//files do not become part of tree
+    
 
 
     
 
     files.push_back(new Node());
-    files.back()->directory = "key_file";
+    files.back()->directory = "Id_file";
 
     auto start = chrono::high_resolution_clock::now();
     //read files
@@ -35,6 +35,11 @@ int main (int argc, char* argv[]) {
     auto end_sort = chrono::high_resolution_clock::now();
 
 
+    std::ofstream first_file("first_file");
+    first_file << files[1]->directory ;
+
+    
+
     //this little bit fills the rest of the tree with hashes.
     check = std::ceil(std::log2(size));
 
@@ -47,7 +52,7 @@ int main (int argc, char* argv[]) {
     size = files.size();
 
     
- 
+    
     //hash files
     auto start_read_hash_files = chrono::high_resolution_clock::now();
 

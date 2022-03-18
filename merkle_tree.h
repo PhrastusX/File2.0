@@ -41,7 +41,7 @@ struct merkle_tree {
         std::vector<Node*> parents;
         std::string temp;
         std::string hash;
-        int displacement = 0;
+        int row = 0;
 
 
         while(children.size() != 1){
@@ -53,11 +53,11 @@ struct merkle_tree {
                 children[i]->row = row;
             }
 
-            displacement = children.size() % BASE;
+           
 
             parents.clear();
 
-            for(int i = 0; i < children.size() - displacement; i+=BASE)
+            for(int i = 0; i < children.size() ; i+=BASE)
             {
                 for(int j = i; j < BASE + i; j++)
                 {
@@ -77,31 +77,15 @@ struct merkle_tree {
 
             }
 
-            if(displacement != 0)
-            {
-                for(int n = children.size() - displacement; n != children.size(); n++){
-                
-                temp = temp + children[n]->hash;
-                }
-
+                        
             
-            hash = keccak(temp);
-            hash_count++;
-            parents.push_back(new Node(hash));
-
-            for(int n = 0; n < displacement; n++){
-                
-                parents.back()->data_ptr.push_back(children[n]);
-                }
-            }
-
-            
-            displacement = 0;
             temp.clear();
             children = parents;
             row++;
         }
         
+        parents[0]->row = row;
+        parents[0]->column = 0;
         
         
         this->root = parents[0];
@@ -152,5 +136,6 @@ struct merkle_tree {
             
         
     }
+    
     
 };

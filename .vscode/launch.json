@@ -10,7 +10,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${fileDirname}/${fileBasenameNoExtension}",
-            "args": ["~/Merkle/srsRAN-version-compare/srsRAN-release_21_10", "2",] , 
+            "args": ["~/Documents", "2",] , 
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
             "environment": [],
