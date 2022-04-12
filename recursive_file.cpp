@@ -14,12 +14,8 @@ int main (int argc, char* argv[]) {
     std::vector<Node*> leaves;
     std::vector<Node*> files;//files do not become part of tree
     
-
-
-    
-
     files.push_back(new Node());
-    files.back()->directory = "Id_file";
+    files.back()->directory = "Id_file_prover";
 
     auto start = chrono::high_resolution_clock::now();
     //read files
@@ -31,7 +27,7 @@ int main (int argc, char* argv[]) {
 
     //sort files
     auto start_sort = chrono::high_resolution_clock::now();
-    q_sort(files, 0, files.size()-1);
+    q_sort(files, 1, files.size()-1);
     auto end_sort = chrono::high_resolution_clock::now();
 
 
@@ -71,9 +67,9 @@ int main (int argc, char* argv[]) {
     //build tree
 
     auto start_build_tree = chrono::high_resolution_clock::now();
-    for(int i = 0; i < 10000; i ++){
-        tree.build_tree(leaves, std::stoi(argv[2]));
-    }
+   
+    tree.build_tree(leaves, std::stoi(argv[2]));
+
     auto end_build_tree = chrono::high_resolution_clock::now();
 
     

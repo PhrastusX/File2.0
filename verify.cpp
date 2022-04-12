@@ -54,12 +54,12 @@ std::string verify(int &hash_comps, std::string next, std::vector<std::string> h
     return next;
 }
 
-int main(void){
+int main(int argc, char* argv[]){
 
     
     Keccak keccak;
     std::string buffer;
-    std::ifstream in("hash.txt");
+    std::ifstream in(argv[1]);
 
     std::smatch index;//holds index row,column
     std::smatch hash;//holds the hash
@@ -74,7 +74,7 @@ int main(void){
     std::ifstream in_first(directory);
     
     std::string first_file = files_to_hash(directory);
-    std::string hash_file = files_to_hash("Id_file");
+    std::string hash_file = files_to_hash("Id_file_verifier");
 
 
 
@@ -104,7 +104,9 @@ int main(void){
        
     }
 
-    
+    for(int i = 0; i < hashes.size(); i ++){
+        std::cout << hashes[i] << std::endl;
+    }
     
     
 
@@ -113,9 +115,9 @@ int main(void){
 
     auto start_verify = chrono::high_resolution_clock::now();
     
-    for(int i = 0; i < 10000; i++){
+    
     next = verify(hash_comps,next,hashes, keccak);
-    }
+    
     auto end_verify = chrono::high_resolution_clock::now();
 
     auto duration_verify = chrono::duration_cast<chrono::microseconds>(end_verify - start_verify);
