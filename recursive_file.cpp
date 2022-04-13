@@ -14,8 +14,7 @@ int main (int argc, char* argv[]) {
     std::vector<Node*> leaves;
     std::vector<Node*> files;//files do not become part of tree
     
-    files.push_back(new Node());
-    files.back()->directory = "Id_file_prover";
+    add_Id(files);
 
     auto start = chrono::high_resolution_clock::now();
     //read files
@@ -37,15 +36,7 @@ int main (int argc, char* argv[]) {
     
 
     //this little bit fills the rest of the tree with hashes.
-    check = std::ceil(std::log2(size));
-
-    additional_files = pow(2,check) - size;
-
-    for(int i = 1; i <= additional_files; i++){
-        files.push_back(files[i]);
-    }
-
-    size = files.size();
+    balance_leaves(files);
 
     
     

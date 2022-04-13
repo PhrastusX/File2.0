@@ -18,6 +18,7 @@ struct Node {
     std::vector<Node *> data_ptr;
     std::string directory;
     double size;
+    bool changes = false;
 
     Node(){
         

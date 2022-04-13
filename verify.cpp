@@ -74,7 +74,7 @@ int main(int argc, char* argv[]){
     std::ifstream in_first(directory);
     
     std::string first_file = files_to_hash(directory);
-    std::string hash_file = files_to_hash("Id_file_verifier");
+    std::string hash_file = files_to_hash("Id_file_prover");
 
 
 

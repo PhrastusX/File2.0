@@ -26,7 +26,7 @@ bool checkIfFile(std::string filePath)
     return false;
 }
 
-
+//fills the vector with the directories of the files to be read by hash_files
 void fill_files(std::string directory, std::vector<Node *> &files)
 {
     
@@ -53,6 +53,25 @@ void fill_files(std::string directory, std::vector<Node *> &files)
     
     }
     
+}
+
+
+void balance_leaves(std::vector<Node*> &f){
+    int size = f.size();
+    int check = std::ceil(std::log2(size));
+
+    int additional_files = pow(2,check) - size;
+
+    for(int i = 1; i <= additional_files; i++){
+        f.push_back(f[i]);
+    }
+
+    
+}
+
+void add_Id(std::vector<Node*> &f){
+    f.push_back(new Node());
+    f.back()->directory = "Id_file_prover";
 }
 
 
