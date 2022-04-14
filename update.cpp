@@ -19,15 +19,17 @@ void compare(std::vector<Node*> c, std::vector<Node*>n){
         file_rep_n = files_to_hash(n[i]->directory);
 
         //if the files are the same continue
-        if(file_rep_c == file_rep_n){
+        if(files_to_hash(c[i]->directory).compare(files_to_hash(n[i]->directory)) == 0){
             continue;
         }
         else{
             n[i]->changes = true;
+            //std::cout << file_rep_n << "\n\n" << file_rep_c << std::endl;
         }
     }
 
 }
+
 int main(int argc, char* argv[])
 {
 
@@ -46,8 +48,8 @@ int main(int argc, char* argv[])
     fill_files(current_version_directory, current_version);
     fill_files(new_version_directory, new_version);
 
-    std::cout << current_version.size() << std::endl;
-    std::cout << new_version.size() << std::endl;
+    std::cout << "Current version size " << current_version.size() << std::endl;
+    std::cout << "New version size "<<new_version.size() << std::endl;
 
     q_sort(current_version, 1, current_version.size()-1);
     q_sort(new_version, 1, new_version.size()-1);
@@ -62,7 +64,7 @@ int main(int argc, char* argv[])
     std::cout << current_version.size() << std::endl;
     std::cout << new_version.size() << std::endl;
 
-  
+    size = current_version.size();
 
     compare(current_version, new_version);
     int count = 0;

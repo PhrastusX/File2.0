@@ -14,7 +14,7 @@ int main (int argc, char* argv[]) {
     std::vector<Node*> leaves;
     std::vector<Node*> files;//files do not become part of tree
     
-    add_Id(files);
+    add_Id(files, argv[3]);
 
     auto start = chrono::high_resolution_clock::now();
     //read files

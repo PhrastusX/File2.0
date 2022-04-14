@@ -32,6 +32,7 @@ void fill_files(std::string directory, std::vector<Node *> &files)
     
     std::string directory_path;
     double file_size;
+    
   
     for ( filesys::recursive_directory_iterator end, dir(directory); 
     dir != end; dir++ ) {
@@ -69,9 +70,9 @@ void balance_leaves(std::vector<Node*> &f){
     
 }
 
-void add_Id(std::vector<Node*> &f){
+void add_Id(std::vector<Node*> &f, std::string id){
     f.push_back(new Node());
-    f.back()->directory = "Id_file_prover";
+    f.back()->directory = id;
 }
 
 
@@ -149,7 +150,19 @@ std::string files_to_hash(std::string directory_path)
 
 }
 
+void sort_by_directory(std::vector<Node*> f){
+    int size = f.size();
+    Node* current;
+    for(int i = 0; i < size; i++){
+        current = f[i];
+        for(int j = i + 1; j < size; j++){
+            if(current->size == f[j]->size ){
 
+            }
+        }
+         
+    }
+}
 std::vector<Node *> hash_file(std::vector<Node *> files, int BASE, int &count)
 {
     //std::vector<std::string> file_name; //keeping track of file names

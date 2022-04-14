@@ -39,7 +39,7 @@ base = [
 '21.1',
 '22.0',
 ]
-number_of_hashes = [
+percent_change = [
     0,
 9.3836,
 7.3597,
@@ -78,13 +78,67 @@ number_of_hashes = [
 62.5285,
 
 ]
-theoretical_hashes= []
+theoretical_hashes= [
+     100,
+125,
+100,
+126,
+75,
+700,
+100,
+650,
+78,
+568,
+200,
+176,
+560,
+12,
+19,
+13,
+478,
+9,
+100,
+11,
+768,
+60,
+36,
+4,
+891,
+3,
+84,
+375,
+73,
+698,
+79,
+643,
+28,
+780,
+65,
+936,
 
+]
+
+fig,ax = plt.subplots()
 
 plt.title("changes v time")
-plt.plot(base, number_of_hashes, 'go')
-plt.ylabel("Percent Change")
-plt.xticks(rotation=90)
+ax.plot(base, percent_change, 'go')
+# set x-axis label
+ax.set_xlabel("Bitcoin Version",fontsize=14)
+# set y-axis label
+ax.set_ylabel("Percent of files change",color="green",fontsize=14)
+
+ax2=ax.twinx()
+# make a plot with different y-axis using second axis object
+ax2.plot(base, theoretical_hashes , 'ro')
+ax2.set_ylabel("Number of Rehashes",color="red",fontsize=14)
+
+
+
+
+
+
+
+
 plt.grid()
 plt.xlabel("Bitcoin version")
 plt.show()

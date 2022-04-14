@@ -71,10 +71,10 @@ int main(int argc, char* argv[]){
     std::ifstream in_first_file("first_file");
     in_first_file >> directory;
     in_first_file.close();
-    std::ifstream in_first(directory);
+    //gstd::ifstream in_first(directory);
     
     std::string first_file = files_to_hash(directory);
-    std::string hash_file = files_to_hash("Id_file_prover");
+    std::string hash_file = files_to_hash(argv[2]);
 
 
 
