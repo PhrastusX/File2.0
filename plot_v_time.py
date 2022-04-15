@@ -120,7 +120,7 @@ theoretical_hashes= [
 
 fig,ax = plt.subplots()
 
-plt.title("changes v time")
+plt.title("Rehashes per version")
 ax.plot(base, percent_change, 'go')
 # set x-axis label
 ax.set_xlabel("Bitcoin Version",fontsize=14)
@@ -131,12 +131,6 @@ ax2=ax.twinx()
 # make a plot with different y-axis using second axis object
 ax2.plot(base, theoretical_hashes , 'ro')
 ax2.set_ylabel("Number of Rehashes",color="red",fontsize=14)
-
-
-
-
-
-
 
 
 plt.grid()

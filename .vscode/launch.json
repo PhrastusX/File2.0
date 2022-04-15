@@ -10,7 +10,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${fileDirname}/${fileBasenameNoExtension}",
-            "args": ["~/bitcoin-version-compare/bitcoin-0.10.0", "~/bitcoin-version-compare/bitcoin-0.10.1",] , 
+            "args": ["~/bitcoin-version-compare/bitcoin-0.10.0/src", "~/bitcoin-version-compare/bitcoin-0.10.1/src", "Id_file_verifier"] , 
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
             "environment": [],

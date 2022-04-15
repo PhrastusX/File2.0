@@ -41,8 +41,8 @@ int main(int argc, char* argv[])
     std::string current_version_directory = argv[1];
     std::string new_version_directory = argv[2];
 
-    add_Id(current_version);
-    add_Id(new_version);
+    add_Id(current_version,argv[3]);
+    add_Id(new_version, argv[3]);
 
     //fill the vectors with the appropriate directories.
     fill_files(current_version_directory, current_version);

@@ -40,7 +40,7 @@ public:
   enum Bits { Keccak224 = 224, Keccak256 = 256, Keccak384 = 384, Keccak512 = 512 };
 
   /// same as reset()
-  explicit Keccak(Bits bits = Keccak256);
+  explicit Keccak(Bits bits = Keccak512);
 
   /// compute hash of a memory block
   std::string operator()(const void* data, size_t numBytes);
